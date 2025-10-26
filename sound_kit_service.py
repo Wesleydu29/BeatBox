@@ -1,5 +1,5 @@
 import wave
-import array
+from array import array
 
 
 class Sound:
@@ -12,9 +12,9 @@ class Sound:
         self.load_sound()
     
     def load_sound(self):
-        wave_file = wave.open(self.filename, mode='rb')
-        self.nb_samples = wave_file.getnframes() # to get the number of frames
-        frames = wave_file.readframes(self.nb_samples) # reads and returns at most n frames of audio / bytes : 8 bits
+        wav_file = wave.open(self.filename, mode='rb')
+        self.nb_samples = wav_file.getnframes() # to get the number of frames
+        frames = wav_file.readframes(self.nb_samples) # reads and returns at most n frames of audio / bytes : 8 bits
 
         self.samples = array('h', frames)
 
