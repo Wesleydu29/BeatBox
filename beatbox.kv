@@ -2,8 +2,19 @@
 
 MainWidget:
 
+<ControlButton@Button>:
+
 <MainWidget>:
     tracks_layout: tracks_layout
     BoxLayout:
-        id: tracks_layout
         orientation: "vertical"
+        BoxLayout:
+            size_hint_y: None
+            height: dp(100)
+            ControlButton:
+                text: "Play"
+            ControlButton:
+                text: "Stop"
+        BoxLayout:
+            id: tracks_layout
+            orientation: "vertical"
