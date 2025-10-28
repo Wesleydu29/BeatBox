@@ -2,7 +2,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.togglebutton import ToggleButton
 
-TRACK_NB_STEPS = 16
 
 class TrackStepButton(ToggleButton):
     pass
@@ -11,7 +10,7 @@ class TrackSoundButton(Button):
     pass
 
 class TrackWidget(BoxLayout):
-    def __init__(self, sound, audio_engine, **kwargs):
+    def __init__(self, sound, audio_engine, nb_steps, **kwargs):
         super(TrackWidget, self).__init__(**kwargs)
         sound_button = TrackSoundButton()
         sound_button.text = sound.displayname
@@ -19,8 +18,26 @@ class TrackWidget(BoxLayout):
         self.add_widget(sound_button)
         self.audio_engine = audio_engine
         self.sound = sound
-        for i in range(0,TRACK_NB_STEPS):
-            self.add_widget(TrackStepButton())
+        #self.track_source = audio_engine.create_track(sound.samples, 120)
+        self.step_button = []
+        self.nb_steps = nb_steps
+        for i in range(0, nb_steps):
+            step_button = TrackStepButton()
+            step_button.bind(state=self.on_step_button_state)
+            self.step_button.append(step_button)
+            self.add_widget(step_button)
 
     def on_sound_button_press(self):
         self.audio_engine.play_sound(self.sound.samples)
+
+    def on_step_button_state(self, widget, value):
+
+        steps = []
+        for i in range(0, self.nb_steps ):
+            if self.step_button[i].state == "down":
+                steps.append(1)
+            else:
+                steps.append(0)
+        
+        #print(str(steps))
+        self.track_source.set_steps(steps)

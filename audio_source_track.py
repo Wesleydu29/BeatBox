@@ -18,7 +18,7 @@ class AudioSourceTrack(ThreadSource):
         self.last_sound_sample_start_index = 0
 
     def set_steps(self, steps):
-        if len(self.steps) == self.steps:
+        if len(self.steps) == len(self.steps):
             self.current_step_index = 0
         self.steps = steps
 
@@ -35,7 +35,7 @@ class AudioSourceTrack(ThreadSource):
 
 
     
-    def get_bytes(self, *args, **kwargs):
+    def get_bytes_array(self):
         for i in range(0, self.step_nb_samples):
             if len(self.steps) > 0:
                 if self.steps[self.current_step_index] == 1 and i < self.nb_wav_samples:  # if step is active, play song
@@ -57,4 +57,7 @@ class AudioSourceTrack(ThreadSource):
             self.current_step_index = 0
 
         #self.current_samples_index += 1
-        return self.buf.tobytes()
+        return self.buf
+    
+    def get_bytes(self, *args, **kwargs):
+        return self.get_bytes_array().tobytes()
