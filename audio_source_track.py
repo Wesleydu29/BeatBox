@@ -33,15 +33,25 @@ class AudioSourceTrack(ThreadSource):
                 self.step_nb_samples = n
                 self.buf = array('h', b"\x00\x00" * self.step_nb_samples) #to 64 bytes
 
+    def no_steps_activated(self): # function to prevent sounds when launching the app
+
+        if len(self.steps) == 0:
+            return True
+        
+        for i in range(len(self.steps)):
+            if self.steps[i] == 1:
+                return False
+        
+        return True
 
     
     def get_bytes_array(self):
         for i in range(0, self.step_nb_samples):
-            if len(self.steps) > 0:
+            if len(self.steps) > 0 and not self.no_steps_activated():
                 if self.steps[self.current_step_index] == 1 and i < self.nb_wav_samples:  # if step is active, play song
                     self.buf[i] = self.wav_samples[i]
                     if i == 0:
-                         self.last_sound_sample_start_index = self.current_samples_index  # to remember the last position (in the sample) if next step = 0
+                        self.last_sound_sample_start_index = self.current_samples_index  # to remember the last position (in the sample) if next step = 0
                 else:
                     index = self.current_samples_index - self.last_sound_sample_start_index
                     if index < self.nb_wav_samples:
