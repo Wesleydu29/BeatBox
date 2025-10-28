@@ -18,7 +18,7 @@ class AudioSourceTrack(ThreadSource):
         self.last_sound_sample_start_index = 0
 
     def set_steps(self, steps):
-        if len(self.steps) == len(self.steps):
+        if not len(self.steps) == len(self.steps):
             self.current_step_index = 0
         self.steps = steps
 

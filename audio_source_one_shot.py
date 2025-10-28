@@ -23,6 +23,6 @@ class AudioSourceOneShot(ThreadSource):
                 if self.current_samples_index < self.nb_wav_samples:
                     self.buf[i] = self.wav_samples[self.current_samples_index]
                 else:
-                    self.buf[i]
+                    self.buf[i] = 0
                 self.current_samples_index += 1
         return self.buf.tobytes()

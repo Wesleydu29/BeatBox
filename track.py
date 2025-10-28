@@ -10,7 +10,7 @@ class TrackSoundButton(Button):
     pass
 
 class TrackWidget(BoxLayout):
-    def __init__(self, sound, audio_engine, nb_steps, **kwargs):
+    def __init__(self, sound, audio_engine, nb_steps, track_source, **kwargs):
         super(TrackWidget, self).__init__(**kwargs)
         sound_button = TrackSoundButton()
         sound_button.text = sound.displayname
@@ -18,6 +18,7 @@ class TrackWidget(BoxLayout):
         self.add_widget(sound_button)
         self.audio_engine = audio_engine
         self.sound = sound
+        self.track_source = track_source
         #self.track_source = audio_engine.create_track(sound.samples, 120)
         self.step_button = []
         self.nb_steps = nb_steps
