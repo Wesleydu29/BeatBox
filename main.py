@@ -1,7 +1,7 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.relativelayout import RelativeLayout
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, Clock
 from kivy.properties import NumericProperty
 from kivy.metrics import dp
 from track import TrackWidget
@@ -18,6 +18,7 @@ class MainWidget(RelativeLayout):
     tracks_layout = ObjectProperty()
     play_indicator_widget = ObjectProperty()
     TRACK_STEPS_LEFT_ALIGN = NumericProperty(dp(100))
+    step_index = 0
 
     def __init__(self, **kw):
         super(MainWidget, self).__init__(**kw)
@@ -29,13 +30,23 @@ class MainWidget(RelativeLayout):
         #self.audio_engine.play_sound(kick_sound.samples)
 
         #self.audio_engine.create_track(kick_sound.samples, 120)
-        self.mixer = self.audio_engine.create_mixer(self.sound_kit_service.soundkit.get_all_samples(), 120, TRACK_NB_STEPS)
+        self.mixer = self.audio_engine.create_mixer(self.sound_kit_service.soundkit.get_all_samples(), 120, TRACK_NB_STEPS, self.on_mixer_current_step_changed)
 
     def on_parent(self, widget, parent):
         self.play_indicator_widget.set_nb_steps(TRACK_NB_STEPS)
         for i in range(0, self.sound_kit_service.get_nb_tracks()):
             sound = self.sound_kit_service.get_sound_at(i)
             self.tracks_layout.add_widget(TrackWidget(sound, self.audio_engine, TRACK_NB_STEPS, self.mixer.tracks[i], self.TRACK_STEPS_LEFT_ALIGN ))
+
+    def on_mixer_current_step_changed(self, step_index):
+        self.step_index = step_index
+        Clock.schedule_once(self.update_play_indicator_callback, 0)
+
+    def update_play_indicator_callback(self, dt):
+        if self.play_indicator_widget is not None:
+            self.play_indicator_widget.set_current_step_index(self.step_index)
+
+        
 
 
 class BeatBoxApp(App):
