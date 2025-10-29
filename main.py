@@ -2,17 +2,22 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties import ObjectProperty
+from kivy.properties import NumericProperty
+from kivy.metrics import dp
 from track import TrackWidget
 from sound_kit_service import *
 from audio_engine import AudioEngine
 
 Builder.load_file("track.kv")
+Builder.load_file("play_indicator.kv")
 
 TRACK_NB_STEPS = 16
 
 
 class MainWidget(RelativeLayout):
     tracks_layout = ObjectProperty()
+    play_indicator_widget = ObjectProperty()
+    TRACK_STEPS_LEFT_ALIGN = NumericProperty(dp(100))
 
     def __init__(self, **kw):
         super(MainWidget, self).__init__(**kw)
@@ -27,9 +32,10 @@ class MainWidget(RelativeLayout):
         self.mixer = self.audio_engine.create_mixer(self.sound_kit_service.soundkit.get_all_samples(), 120, TRACK_NB_STEPS)
 
     def on_parent(self, widget, parent):
+        self.play_indicator_widget.set_nb_steps(TRACK_NB_STEPS)
         for i in range(0, self.sound_kit_service.get_nb_tracks()):
             sound = self.sound_kit_service.get_sound_at(i)
-            self.tracks_layout.add_widget(TrackWidget(sound, self.audio_engine, TRACK_NB_STEPS, self.mixer.tracks[i]))
+            self.tracks_layout.add_widget(TrackWidget(sound, self.audio_engine, TRACK_NB_STEPS, self.mixer.tracks[i], self.TRACK_STEPS_LEFT_ALIGN ))
 
 
 class BeatBoxApp(App):
