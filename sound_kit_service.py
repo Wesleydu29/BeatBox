@@ -42,7 +42,7 @@ class SoundKit1(SoundKit):
 
 
 class SoundKitService:
-    soundkit = SoundKit2()
+    soundkit = SoundKit1()
 
     def get_nb_tracks(self):
         return self.soundkit.get_nb_tracks()

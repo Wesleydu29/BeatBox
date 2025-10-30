@@ -4,7 +4,6 @@ from array import array
 class AudioSourceTrack(ThreadSource):
     steps = ()
     step_nb_samples = 0
-    buf = None
 
     def __init__(self, output_stream, wav_samples, sample_rate, bpm, min_bpm, *args, **kwargs):
         ThreadSource.__init__(self, output_stream, *args, **kwargs)
@@ -19,7 +18,6 @@ class AudioSourceTrack(ThreadSource):
 
         self.step_nb_samples = self.compute_step_nb_samples(bpm)
         self.buffer_nb_samples = self.compute_step_nb_samples(min_bpm)
-        self.buf = array('h', b"\x00\x00" * self.buffer_nb_samples)
         self.silence = array('h', b"\x00\x00" * self.buffer_nb_samples)
 
         if not self.bpm == 0:

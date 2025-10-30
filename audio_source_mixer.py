@@ -2,6 +2,17 @@ from audiostream.sources.thread import ThreadSource
 from array import array
 from audio_source_track import AudioSourceTrack
 
+MAX_16BITS = 32767
+MIN_16BITS = -32768
+
+def sum_16bits(n):
+    s = sum(n)
+    if s > MAX_16BITS:
+        s = MAX_16BITS
+    if s < MIN_16BITS:
+        s = MIN_16BITS
+    return s 
+
 class AudioSourceMixer(ThreadSource):
     buf = None
 
@@ -69,7 +80,7 @@ class AudioSourceMixer(ThreadSource):
             for j in range(0, len(track_buffers)): # to mix, to add sample 1 of the first track, with the sample 1 of the second track ...
                 self.buf[i] += track_buffers[j][i]"""
         
-        s = map(sum, zip(*track_buffers))
+        s = map(sum_16bits, zip(*track_buffers))
         self.buf = array('h', s)
 
         # to send the current step index to the PlayIndicator
