@@ -12,6 +12,8 @@ Builder.load_file("track.kv")
 Builder.load_file("play_indicator.kv")
 
 TRACK_NB_STEPS = 16
+MIN_BPM = 80
+MAX_BPM = 160
 
 
 class MainWidget(RelativeLayout):
@@ -31,7 +33,7 @@ class MainWidget(RelativeLayout):
         #self.audio_engine.play_sound(kick_sound.samples)
 
         #self.audio_engine.create_track(kick_sound.samples, 120)
-        self.mixer = self.audio_engine.create_mixer(self.sound_kit_service.soundkit.get_all_samples(), 120, TRACK_NB_STEPS, self.on_mixer_current_step_changed)
+        self.mixer = self.audio_engine.create_mixer(self.sound_kit_service.soundkit.get_all_samples(), 120, TRACK_NB_STEPS, self.on_mixer_current_step_changed, MIN_BPM )
 
     def on_parent(self, widget, parent):
         self.play_indicator_widget.set_nb_steps(TRACK_NB_STEPS)
@@ -54,11 +56,11 @@ class MainWidget(RelativeLayout):
         self.mixer.audio_stop()
     
     def on_bpm(self, widget, value):
-        if value < 80:
-            self.bpm = 80
+        if value < MIN_BPM :
+            self.bpm = MIN_BPM
             return
-        if value > 160:
-            self.bpm = 160
+        if value > MAX_BPM :
+            self.bpm = MAX_BPM 
             return
         
         self.mixer.set_bpm(self.bpm)

@@ -37,11 +37,12 @@ class SoundKit1(SoundKit):
               Sound("sounds/kit1/clap.wav", "CLAP"),
               Sound("sounds/kit1/shaker.wav", "SHAKER"),
               Sound("sounds/kit1/snare.wav", "SNARE"))
+
                 
 
 
 class SoundKitService:
-    soundkit = SoundKit1()
+    soundkit = SoundKit2()
 
     def get_nb_tracks(self):
         return self.soundkit.get_nb_tracks()
