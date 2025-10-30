@@ -16,8 +16,26 @@ MainWidget:
             height: dp(50)
             ControlButton:
                 text: "Play"
+                on_press: root.on_play_button_press()
             ControlButton:
                 text: "Stop"
+                on_press: root.on_stop_button_press()
+
+            ControlButton:
+                text: "-"
+                size_hint_x: None
+                width: dp(50)
+                on_press: root.bpm -= 5
+            Label:
+                text: str(root.bpm)
+                size_hint_x: None
+                width: dp(80)
+            ControlButton:
+                text: "+"
+                size_hint_x: None
+                width: dp(50)
+                on_press: root.bpm += 5
+
         PlayIndicatorWidget:
             id: play_indicator_widget
             size_hint_y: None

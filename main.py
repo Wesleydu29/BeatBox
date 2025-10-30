@@ -19,6 +19,7 @@ class MainWidget(RelativeLayout):
     play_indicator_widget = ObjectProperty()
     TRACK_STEPS_LEFT_ALIGN = NumericProperty(dp(100))
     step_index = 0
+    bpm = NumericProperty(120)
 
     def __init__(self, **kw):
         super(MainWidget, self).__init__(**kw)
@@ -45,6 +46,22 @@ class MainWidget(RelativeLayout):
     def update_play_indicator_callback(self, dt):
         if self.play_indicator_widget is not None:
             self.play_indicator_widget.set_current_step_index(self.step_index)
+
+    def on_play_button_press(self):
+        self.mixer.audio_play()
+
+    def on_stop_button_press(self):
+        self.mixer.audio_stop()
+    
+    def on_bpm(self, widget, value):
+        if value < 80:
+            self.bpm = 80
+            return
+        if value > 160:
+            self.bpm = 160
+            return
+        
+        self.mixer.set_bpm(self.bpm)
 
         
 
