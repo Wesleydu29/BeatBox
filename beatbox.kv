@@ -4,6 +4,9 @@
 
 MainWidget:
 
+<VerticalSpacing>:
+    size_hint_y: 0.01
+
 <ControlButton@Button>:
 
 <MainWidget>:
@@ -90,6 +93,10 @@ MainWidget:
                     size_hint_y: None
                     height: dp(8)
                     left_align: root.TRACK_STEPS_LEFT_ALIGN
-                BoxLayout:
-                    id: tracks_layout
-                    orientation: "vertical"
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    BoxLayout:
+                        size_hint_min_y: dp(75) * root.nb_tracks
+                        id: tracks_layout
+                        orientation: "vertical"
